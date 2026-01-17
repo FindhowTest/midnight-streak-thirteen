@@ -4,6 +4,7 @@ import { FlowingBackground } from "@/components/game/FlowingBackground";
 import { GameHeader } from "@/components/game/GameHeader";
 import { PlayerCard } from "@/components/game/PlayerCard";
 import { ThirteenArrangePanel } from "@/components/game/ThirteenArrangePanel";
+import { OnlineThirteenSettlement } from "@/components/game/OnlineThirteenSettlement";
 import { Button } from "@/components/ui/button";
 import { Card as UiCard, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -329,37 +330,13 @@ export default function Index() {
             </div>
           </div>
 
-          <UiCard className="glass rounded-3xl">
-            <CardHeader>
-              <CardTitle>分數</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {online.result.results
-                .slice()
-                .sort((a, b) => b.total - a.total)
-                .map(r => (
-                  <div key={r.id} className="flex items-center justify-between">
-                    <div className="font-semibold">
-                      {r.name}{r.fouled ? "（倒水）" : ""}
-                    </div>
-                    <div className="text-sm">
-                      <span className={r.delta >= 0 ? "text-emerald-500" : "text-red-500"}>
-                        {r.delta >= 0 ? "+" : ""}{r.delta}
-                      </span>
-                      <span className="text-muted-foreground"> ／ 總分 {r.total}</span>
-                    </div>
-                  </div>
-                ))}
-
-              <div className="pt-3 flex gap-2">
-                {online.isHost ? (
-                  <Button onClick={online.playAgain} className="w-full">再來一局</Button>
-                ) : (
-                  <Button disabled className="w-full">等待房主開新局…</Button>
-                )}
-              </div>
-            </CardContent>
-          </UiCard>
+          <OnlineThirteenSettlement
+            room={room}
+            result={online.result}
+            myId={online.socketId}
+            isHost={online.isHost}
+            onPlayAgain={online.playAgain}
+          />
         </div>
       </div>
     );
